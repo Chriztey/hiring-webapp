@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import CandidateTable from "@/components/candidatetable";
 import EmptyStateCandidate from "@/components/emptycandidate";
-import { supabase } from "@/app/lib/supabase";
+import { supabase } from "@/services/supabase";
 
 interface Candidate {
   id: string;
@@ -72,12 +72,12 @@ export default function ManageCandidatesPage() {
         <div className="flex items-center gap-2">
           <button
             onClick={handleBack}
-            className="text-black text-m-bold bg-neutral-10 border border-neutral-40 rounded-[8px] px-4 py-1 shadow-sm"
+            className="text-black text-m-bold bg-neutral-10 border border-neutral-40 rounded-xl px-4 py-1 shadow-sm"
           >
             Job list
           </button>
           <span className="text-neutral-100 text-2xl">›</span>
-          <button className="text-black text-m-bold bg-neutral-30 border border-neutral-50 rounded-[8px] px-4 py-1 shadow-sm">
+          <button className="text-black text-m-bold bg-neutral-30 border border-neutral-50 rounded-xl px-4 py-1 shadow-sm">
             Manage Candidate
           </button>
         </div>

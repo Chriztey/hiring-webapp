@@ -1,39 +1,10 @@
-// import ResumeForm from "@/components/resumeform";
-// import { mockJobs } from "@/app/data/mockjob";
-// import { Job } from "@/app/data/job";
-
-// interface ApplyPageProps {
-//   params: { jobId: string };
-// }
-
-// export default function ApplyPage({ params }: ApplyPageProps) {
-//   const { jobId } = params;
-
-//   // Get the job from mock data — later you’ll replace this with an API call
-//   const job = mockJobs.find((j) => j.id === jobId) as Job | undefined;
-
-//   if (!job) {
-//     return (
-//       <div className="h-screen flex items-center justify-center text-neutral-70">
-//         Job not found.
-//       </div>
-//     );
-//   }
-
-//   return (
-//     <div className="min-h-screen flex justify-center items-center bg-gray-100">
-//       <ResumeForm job={job} />
-//     </div>
-//   );
-// }
-
 "use client";
 
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import ResumeForm from "@/components/resumeform";
 import { Job } from "@/app/data/job";
-import { supabase } from "@/app/lib/supabase";
+import { supabase } from "@/services/supabase";
 
 export default function ApplyPage() {
   const params = useParams();

@@ -1,17 +1,14 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { sendLoginLink } from "../lib/emailLinkAuth";
-import { handleGoogleLogin } from "../lib/googleLoginAuth";
+import { sendLoginLink } from "@/features/auth/lib/emailLinkAuth";
+import { handleGoogleLogin } from "@/features/auth/lib/googleLoginAuth";
 import { useState } from "react";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "../store";
 
 export default function RegisterPage() {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
   const router = useRouter();
-  const dispatch = useDispatch<AppDispatch>();
 
   const handleSendLink = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -26,7 +23,7 @@ export default function RegisterPage() {
 
   const onGoogleClick = async () => {
     try {
-      const user = await handleGoogleLogin(dispatch);
+      const user = await handleGoogleLogin();
       console.log("✅ Logged in as:", user.email);
       router.replace("/"); // your home will auto-redirect based on role
     } catch (error) {
@@ -50,11 +47,11 @@ export default function RegisterPage() {
             <p className="font-bold text-[20px] leading-[30px] text-neutral-90">
               Bergabung dengan Rakamin
             </p>
-            <p className="font-normal text-[14px] leading-[24px] text-neutral-90">
+            <p className="font-normal text-[14px] leading-6 text-neutral-90">
               Sudah punya akun?{" "}
               <a
                 href="/login"
-                className="text-[14px] leading-[24px] text-primary-main"
+                className="text-[14px] leading-6 text-primary-main"
               >
                 Masuk
               </a>
@@ -65,7 +62,7 @@ export default function RegisterPage() {
           <div className="flex flex-col gap-2 mb-4">
             {" "}
             {/* 8px spacing inside */}
-            <label className="font-normal text-[12px] leading-[20px] text-neutral-90">
+            <label className="font-normal text-[12px] leading-5 text-neutral-90">
               Alamat email
             </label>
             <input
@@ -73,14 +70,14 @@ export default function RegisterPage() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder=""
-              className="w-full h-[40px] border-2 border-neutral-40 rounded-lg px-4 py-2 opacity-100 focus:outline-2[px] focus:outline-primary-main focus:ring-2 focus:ring-primary-main"
+              className="w-full h-10 border-2 border-neutral-40 rounded-lg px-4 py-2 opacity-100 focus:outline-2[px] focus:outline-primary-main focus:ring-2 focus:ring-primary-main"
             />
           </div>
 
           {/* Primary Button */}
           <button
-            className=" bg-secondary-main w-full py-3  text-neutral-90 text-l-bold rounded-lg flex items-center justify-center gap-1 
-            rounded-lg pt-[6px] pr-4 pb-[6px] pl-4 "
+            className=" bg-secondary-main w-full py-3  text-neutral-90 text-l-bold flex items-center justify-center gap-1 
+            rounded-lg pt-1.5 pr-4 pb-1.5 pl-4 "
             onClick={handleSendLink}
           >
             Daftar dengan email
@@ -96,10 +93,10 @@ export default function RegisterPage() {
           {/* Google Button */}
           <button
             onClick={onGoogleClick}
-            className="w-full py-3 rounded-lg flex items-center justify-center gap-1 
-            rounded-lg pt-[6px] pr-4 pb-[6px] pl-4 bg-neutral-10 border border-neutral-40"
+            className="w-full py-3 flex items-center justify-center gap-1 
+            rounded-lg pt-1.5 pr-4 pb-1.5 pl-4 bg-neutral-10 border border-neutral-40"
           >
-            <img src="/google.svg" alt="Google" className="h-[24px] pr-2" />
+            <img src="/google.svg" alt="Google" className="h-6 pr-2" />
             <span className="font-semibold text-[14px] leading-[21px] align-middle text-neutral-90">
               Daftar dengan Google
             </span>

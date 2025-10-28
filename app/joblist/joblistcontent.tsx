@@ -7,7 +7,7 @@ import JobModal from "../../components/jobmodal";
 import JobCard from "../../components/jobcard";
 import { useEffect, useState } from "react";
 import { Job } from "../data/job";
-import { supabase } from "../lib/supabase";
+import { supabase } from "../../services/supabase";
 import { useRouter } from "next/navigation";
 
 export default function JobListContent() {
@@ -70,8 +70,8 @@ export default function JobListContent() {
     <div className="min-h-screen w-full bg-white flex flex-col items-start px-5 py-4.5">
       <TopBar title="Job Board" />
 
-      <div className="w-full flex flex-col md:flex-row item-start gap-6 pt-[36px]">
-        <div className="w-full flex flex-col flex justify-center mb-8 gap-4">
+      <div className="w-full flex flex-col md:flex-row item-start gap-6 pt-9">
+        <div className="w-full flex-col flex justify-center mb-8 gap-4">
           <SearchBar value={searchQuery} onChange={setSearchQuery} />
 
           {jobs.length === 0 ? (

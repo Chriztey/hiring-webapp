@@ -6,7 +6,7 @@ import UserJobList from "@/components/userjoblist";
 import JobDetail from "@/components/jobdetail";
 import EmptyStateJob from "@/components/emptystatejob";
 import TopBar from "@/components/topbar";
-import { supabase } from "../lib/supabase";
+import { supabase } from "../../services/supabase";
 
 export default function JobBoardPage() {
   const [jobs, setJobs] = useState<Job[]>([]);
@@ -47,30 +47,6 @@ export default function JobBoardPage() {
   }
 
   return (
-    // <div className="min-h-screen w-full bg-white flex flex-col items-start px-5 py-4.5">
-    //   <TopBar title="Job Board" />
-
-    //   {jobs.length === 0 ? (
-    //     <EmptyStateJob />
-    //   ) : (
-    //     <div className="flex flex-col md:flex-row w-full h-screen p-4 md:p-8">
-    //       {/* Left side */}
-    //       <div className="w-full md:w-1/3 border-b md:border-b-0 md:border-r bg-white overflow-y-auto h-64 md:h-auto">
-    //         <UserJobList
-    //           jobs={jobs}
-    //           selectedJob={selectedJob}
-    //           onSelect={setSelectedJob}
-    //         />
-    //       </div>
-
-    //       {/* Right side */}
-    //       <div className="flex-1 bg-white overflow-y-auto mt-4 md:mt-0">
-    //         <JobDetail job={selectedJob} />
-    //       </div>
-    //     </div>
-    //   )}
-    // </div>
-
     <div className="min-h-screen w-full bg-white flex flex-col items-start px-5 py-4.5">
       <TopBar title="Job Board" />
 

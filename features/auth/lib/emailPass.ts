@@ -1,14 +1,12 @@
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth, db } from "./firebase"; 
-import { AppDispatch } from "../store";
-import { setUser, startLoading } from "../store/slices/authSlice";
+import { auth, db } from "@/services/firebase"; 
 
 
-export async function loginWithEmailPassword(email: string, password: string, dispatch: AppDispatch) {
+export async function loginWithEmailPassword(email: string, password: string) {
   try {
 
-    dispatch(startLoading());
+    // dispatch(startLoading());
     const result = await signInWithEmailAndPassword(auth, email, password);
     const user = result.user;
 
@@ -28,15 +26,10 @@ export async function loginWithEmailPassword(email: string, password: string, di
       });
     }
 
-    // Dispatch user info to redux
-    dispatch(
-      setUser({
-        uid: user.uid,
-        email: user.email || "",
-        role: (snapshot.data()?.role as "admin" | "user") || "user",
-      })
-    );
+    // ✅ Cache the role locally
+    localStorage.setItem("userRole", role);
 
+ 
 
     return { user, role };
   } catch (error: any) {

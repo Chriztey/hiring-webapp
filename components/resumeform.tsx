@@ -5,7 +5,7 @@ import { Job } from "@/app/data/job";
 import DomicileSelect from "./domicileselect";
 import CountrySelect from "./countryselect";
 import { useRouter } from "next/navigation";
-import { supabase } from "@/app/lib/supabase";
+import { supabase } from "@/services/supabase";
 
 interface ResumeFormProps {
   job: Job;
@@ -251,31 +251,6 @@ const ResumeForm: React.FC<ResumeFormProps> = ({ job }) => {
     router.push(`/apply/success`); // optional redirect
   };
 
-  // const handleSubmit = (e: React.FormEvent) => {
-  //   e.preventDefault();
-  //   const allTouched: Touched = {
-  //     fullName: true,
-  //     dateOfBirth: true,
-  //     gender: true,
-  //     domicile: true,
-  //     phoneNumber: true,
-  //     email: true,
-  //     linkedinLink: true,
-  //   };
-  //   setTouched(allTouched);
-  //   const errs = validate(values);
-  //   setErrors(errs);
-
-  //   if (Object.keys(errs).length === 0) {
-  //     console.log("✅ Submit payload:", values);
-  //     // send to API here
-  //   } else {
-  //     const first = Object.keys(errs)[0] as keyof Values;
-  //     const el = document.getElementsByName(String(first))[0];
-  //     if (el) el.scrollIntoView({ behavior: "smooth", block: "center" });
-  //   }
-  // };
-
   // --- Back Button ---
   const router = useRouter();
 
@@ -293,7 +268,7 @@ const ResumeForm: React.FC<ResumeFormProps> = ({ job }) => {
         <div className="px-6 pt-8 flex flex-row gap-4 items-center">
           <div
             onClick={handleBack}
-            className="flex items-center justify-center rounded-[4px] border border-neutral-40 bg-neutral-10 w-7 h-7 cursor-pointer hover:bg-neutral-20"
+            className="flex items-center justify-center rounded-lg border border-neutral-40 bg-neutral-10 w-7 h-7 cursor-pointer hover:bg-neutral-20"
           >
             <i className="ri-arrow-left-line text-[16px] leading-none text-neutral-80"></i>
           </div>
@@ -310,7 +285,7 @@ const ResumeForm: React.FC<ResumeFormProps> = ({ job }) => {
           <img src="/profilepicture.svg" alt="job-logo" />
           <button
             type="button"
-            className="bg-neutral-10 rounded-[8px] border border-neutral-40 py-1 px-4 text-m-bold text-neutral-100"
+            className="bg-neutral-10 rounded-xl border border-neutral-40 py-1 px-4 text-m-bold text-neutral-100"
           >
             <i className="ri-upload-2-fill pr-1"></i>
             Take a Picture
@@ -417,7 +392,7 @@ const ResumeForm: React.FC<ResumeFormProps> = ({ job }) => {
 
       <button
         type="submit"
-        className="mt-6 bg-primary-main text-white px-6 py-2 rounded-[8px] hover:bg-primary-hover w-full text-l-bold text-neutral-10"
+        className="mt-6 bg-primary-main text-white px-6 py-2 rounded-xl hover:bg-primary-hover w-full text-l-bold"
       >
         Submit
       </button>

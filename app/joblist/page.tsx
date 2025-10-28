@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import useUserRole from "../hooks/useUserRole";
+import useUserRole from "@/features/auth/hooks/useUserRole";
 import JobListContent from "./joblistcontent"; // move your current JobListPage JSX here
 
 export default function JobListPageWrapper() {

@@ -1,24 +1,22 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { sendLoginLink, completeSignIn } from "../lib/emailLinkAuth";
+import {
+  sendLoginLink,
+  completeSignIn,
+} from "@/features/auth/lib/emailLinkAuth";
 import { useRouter } from "next/navigation";
-import { handleGoogleLogin } from "../lib/googleLoginAuth";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "../store";
+import { handleGoogleLogin } from "@/features/auth/lib/googleLoginAuth";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
   const router = useRouter();
-  const dispatch = useDispatch<AppDispatch>();
 
   // Handle redirect link from email
   useEffect(() => {
-    completeSignIn(dispatch).then((user) => {
-      if (user) {
-        router.push("/"); // redirect to home after login
-      }
+    completeSignIn().then((user) => {
+      if (user) router.push("/");
     });
   }, [router]);
 
@@ -41,7 +39,7 @@ export default function LoginPage() {
 
   const onGoogleClick = async () => {
     try {
-      const user = await handleGoogleLogin(dispatch);
+      const user = await handleGoogleLogin();
       console.log("✅ Logged in as:", user.email);
       router.replace("/"); // your home will auto-redirect based on role
     } catch (error) {
@@ -63,11 +61,11 @@ export default function LoginPage() {
             <p className="font-bold text-[20px] leading-[30px] text-neutral-90">
               Masuk ke Rakamin
             </p>
-            <p className="font-normal text-[14px] leading-[24px] text-neutral-90">
+            <p className="font-normal text-[14px] leading-6 text-neutral-90">
               Belum punya akun?{" "}
               <a
                 href="/register"
-                className="text-[14px] leading-[24px] text-primary-main"
+                className="text-[14px] leading-6 text-primary-main"
               >
                 Daftar menggunakan email
               </a>
@@ -76,14 +74,14 @@ export default function LoginPage() {
 
           {/* Input Section */}
           <form onSubmit={handleSendLink} className="flex flex-col gap-2 mb-4">
-            <label className="font-normal text-[12px] leading-[20px] text-neutral-90">
+            <label className="font-normal text-[12px] leading-5 text-neutral-90">
               Alamat email
             </label>
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full h-[40px] border-2 border-neutral-40 rounded-lg px-4 py-2 focus:ring-2 focus:ring-primary-main"
+              className="w-full h-10 border-2 border-neutral-40 rounded-lg px-4 py-2 focus:ring-2 focus:ring-primary-main"
               required
             />
             {/* {message && (
@@ -117,21 +115,21 @@ export default function LoginPage() {
           {/* Email & Google Button */}
           <button
             onClick={() => router.push("/emaillogin")}
-            className="w-full h-[48px] py-3 rounded-lg flex items-center justify-center gap-1 bg-neutral-10 border border-neutral-40 
-            pt-[6px] pr-4 pb-[6px] pl-4 mb-2"
+            className="w-full h-12 py-3 rounded-lg flex items-center justify-center gap-1 bg-neutral-10 border border-neutral-40 
+            pt-1.5 pr-4 pb-1.5 pl-4 mb-2"
           >
-            <img src="/password.svg" alt="password" className="h-[16px] pr-2" />
+            <img src="/password.svg" alt="password" className="h-4 pr-2" />
             <span className="font-semibold text-[14px] leading-[21px] text-neutral-90">
               Masuk dengan kata sandi
             </span>
           </button>
 
           <button
-            className="w-full h-[48px] py-3 rounded-lg flex items-center justify-center gap-1 
-            pt-[6px] pr-4 pb-[6px] pl-4 bg-neutral-10 border border-neutral-40 "
+            className="w-full h-12 py-3 rounded-lg flex items-center justify-center gap-1 
+            pt-1.5 pr-4 pb-1.5 pl-4 bg-neutral-10 border border-neutral-40 "
             onClick={onGoogleClick}
           >
-            <img src="/google.svg" alt="Google" className="h-[24px] pr-2" />
+            <img src="/google.svg" alt="Google" className="h-6 pr-2" />
             <span className="font-semibold text-[14px] leading-[21px] text-neutral-90">
               Masuk dengan Google
             </span>

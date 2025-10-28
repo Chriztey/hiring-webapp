@@ -7,7 +7,7 @@ export default function RegisterSuccessPage() {
 
   return (
     <div className="flex items-center justify-center min-h-screen">
-      <div className="p-10 bg-white rounded-[8px] shadow-2xl text-center space-y-2">
+      <div className="p-10 bg-white rounded-xl shadow-2xl text-center space-y-2">
         <p className="heading-m-bold text-neutral-90">Periksa Email Anda</p>
         <p className="text-s-regular text-neutral-90">
           Kami sudah mengirimkan link register ke{" "}

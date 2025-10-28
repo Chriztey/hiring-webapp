@@ -75,7 +75,7 @@ export default function JobSalaryInput({
           </div>
         </div>
 
-        <div className="hidden sm:block text-neutral-40 text-lg font-semibold justify-center items-center pt-[24px]">
+        <div className="hidden sm:block text-neutral-40 text-lg font-semibold justify-center items-center pt-6">
           –
         </div>
 

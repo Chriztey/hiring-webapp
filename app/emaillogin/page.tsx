@@ -1,10 +1,13 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { sendLoginLink, completeSignIn } from "../lib/emailLinkAuth";
+import {
+  sendLoginLink,
+  completeSignIn,
+} from "@/features/auth/lib/emailLinkAuth";
 import { useRouter } from "next/navigation";
-import { handleGoogleLogin } from "../lib/googleLoginAuth";
-import { loginWithEmailPassword } from "../lib/emailPass";
+import { handleGoogleLogin } from "@/features/auth/lib/googleLoginAuth";
+import { loginWithEmailPassword } from "@/features/auth/lib/emailPass";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../store";
 
@@ -19,7 +22,7 @@ export default function LoginPage() {
 
   // Handle redirect link from email
   useEffect(() => {
-    completeSignIn(dispatch).then((user) => {
+    completeSignIn().then((user) => {
       if (user) {
         router.push("/"); // redirect to home after login
       }
@@ -27,16 +30,13 @@ export default function LoginPage() {
   }, [router]);
 
   const handleLoginEmailPass = async (e: React.FormEvent) => {
-    e.preventDefault();
     setLoading(true);
+    e.preventDefault();
+
     setError("");
 
     try {
-      const { user, role } = await loginWithEmailPassword(
-        email,
-        password,
-        dispatch
-      );
+      const { user, role } = await loginWithEmailPassword(email, password);
       console.log("Logged in user:", user, "Role:", role);
       router.replace("/"); // redirect after successful login
     } catch (err: any) {
@@ -59,7 +59,7 @@ export default function LoginPage() {
 
   const onGoogleClick = async () => {
     try {
-      const user = await handleGoogleLogin(dispatch);
+      const user = await handleGoogleLogin();
       console.log("✅ Logged in as:", user.email);
       router.replace("/"); // your home will auto-redirect based on role
     } catch (error) {
@@ -81,11 +81,11 @@ export default function LoginPage() {
             <p className="font-bold text-[20px] leading-[30px] text-neutral-90">
               Masuk ke Rakamin
             </p>
-            <p className="font-normal text-[14px] leading-[24px] text-neutral-90">
+            <p className="font-normal text-[14px] leading-6 text-neutral-90">
               Belum punya akun?{" "}
               <a
                 href="/register"
-                className="text-[14px] leading-[24px] text-primary-main"
+                className="text-[14px] leading-6 text-primary-main"
               >
                 Daftar menggunakan email
               </a>
@@ -93,22 +93,19 @@ export default function LoginPage() {
           </div>
 
           {/* Input Section */}
-          <form
-            onSubmit={handleLoginEmailPass}
-            className="flex flex-col gap-2 mb-4"
-          >
-            <label className="font-normal text-[12px] leading-[20px] text-neutral-90">
+          <form className="flex flex-col gap-2 mb-4">
+            <label className="font-normal text-[12px] leading-5 text-neutral-90">
               Alamat email
             </label>
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full h-[40px] border-2 border-neutral-40 rounded-lg px-4 py-2 focus:ring-2 focus:ring-primary-main"
+              className="w-full h-10 border-2 border-neutral-40 rounded-lg px-4 py-2 focus:ring-2 focus:ring-primary-main"
               required
             />
 
-            <label className="font-normal text-[12px] leading-[20px] text-neutral-90">
+            <label className="font-normal text-[12px] leading-5 text-neutral-90">
               Password
             </label>
 
@@ -117,15 +114,42 @@ export default function LoginPage() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder=""
-              className="w-full h-[40px] border-2 border-neutral-40 rounded-lg px-4 py-2 focus:ring-2 focus:ring-primary-main"
+              className="w-full h-10 border-2 border-neutral-40 rounded-lg px-4 py-2 focus:ring-2 focus:ring-primary-main"
               required
             />
 
             <button
-              type="submit"
+              onClick={handleLoginEmailPass}
+              disabled={loading}
               className=" bg-secondary-main w-full py-3 text-neutral-90 text-l-bold rounded-lg flex items-center justify-center gap-1"
             >
-              Masuk
+              {loading ? (
+                <>
+                  <svg
+                    className="animate-spin h-5 w-5 text-neutral-90"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <circle
+                      className="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                    ></circle>
+                    <path
+                      className="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+                    ></path>
+                  </svg>
+                  <span>Loading...</span>
+                </>
+              ) : (
+                <span>Masuk</span>
+              )}
             </button>
           </form>
 
@@ -138,22 +162,22 @@ export default function LoginPage() {
 
           {/* Email & Google Button */}
           <button
-            className="w-full h-[48px] py-3 rounded-lg flex items-center justify-center gap-1 bg-neutral-10 border border-neutral-40 
-            pt-[6px] pr-4 pb-[6px] pl-4 mb-2"
+            className="w-full h-12 py-3 rounded-lg flex items-center justify-center gap-1 bg-neutral-10 border border-neutral-40 
+            pt-1.5 pr-4 pb-1.5 pl-4 mb-2"
             onClick={() => router.push("/login")}
           >
-            <i className="ri-mail-fill h-[16px] pr-2 pb-6"></i>
+            <i className="ri-mail-fill h-4 pr-2 pb-6"></i>
             <span className="font-semibold text-[14px] leading-[21px] text-neutral-90">
               Kirim link login melalui email
             </span>
           </button>
 
           <button
-            className="w-full h-[48px] py-3 rounded-lg flex items-center justify-center gap-1 
-            pt-[6px] pr-4 pb-[6px] pl-4 bg-neutral-10 border border-neutral-40 "
+            className="w-full h-12 py-3 rounded-lg flex items-center justify-center gap-1 
+            pt-1.5 pr-4 pb-1.5 pl-4 bg-neutral-10 border border-neutral-40 "
             onClick={onGoogleClick}
           >
-            <img src="/google.svg" alt="Google" className="h-[24px] pr-2" />
+            <img src="/google.svg" alt="Google" className="h-6 pr-2" />
             <span className="font-semibold text-[14px] leading-[21px] text-neutral-90">
               Masuk dengan Google
             </span>

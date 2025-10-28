@@ -31,7 +31,7 @@ export default function JobDetail({ job }: JobDetailProps) {
               <img src="/raka.svg" alt="raka" />
             </div>
             <div>
-              <span className="px-2 py-0.5 bg-success-main text-white rounded-[4px] text-s-bold">
+              <span className="px-2 py-0.5 bg-success-main text-white rounded-lg text-s-bold">
                 {job.type}
               </span>
               <h3 className="text-l-bold text-neutral-90">{job.title}</h3>
@@ -41,7 +41,7 @@ export default function JobDetail({ job }: JobDetailProps) {
 
           <button
             onClick={handleApply}
-            className="bg-secondary-main text-neutral-90 text-m-bold px-4 py-1 rounded-[8px] hover:bg-secondary-hover transition"
+            className="bg-secondary-main text-neutral-90 text-m-bold px-4 py-1 rounded-xl hover:bg-secondary-hover transition"
           >
             Apply
           </button>

@@ -40,7 +40,7 @@ export default function JobCard({ job, onManage, onEdit }: JobCardProps) {
       <div className="flex flex-col justify-start gap-3 ">
         <div className="flex items-center gap-3">
           <span
-            className={`px-4 py-1 text-m-bold rounded-[8px] border ${getStatusStyle(
+            className={`px-4 py-1 text-m-bold rounded-xl border ${getStatusStyle(
               job.status
             )}`}
           >
@@ -64,14 +64,14 @@ export default function JobCard({ job, onManage, onEdit }: JobCardProps) {
         {onEdit && (
           <button
             onClick={() => onEdit(job)}
-            className="bg-secondary-main text-black text-s-bold px-4 py-1 rounded-[8px] hover:bg-secondary-hover transition"
+            className="bg-secondary-main text-black text-s-bold px-4 py-1 rounded-xl hover:bg-secondary-hover transition"
           >
             Edit
           </button>
         )}
 
         <button
-          className="bg-primary-main text-white text-s-bold px-4 py-1 rounded-[8px] hover:bg-primary-hover transition"
+          className="bg-primary-main text-white text-s-bold px-4 py-1 rounded-xl hover:bg-primary-hover transition"
           onClick={() => onManage(job)}
         >
           Manage Job

@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import JobTypeSelect from "./jobtypeselect";
 import JobSalaryInput from "./jobsalaryinput";
 import ProfileRequirementsSection from "./profilerequirementsection";
-import { supabase } from "@/app/lib/supabase";
+import { supabase } from "@/services/supabase";
 import toast from "react-hot-toast";
 import { Job } from "@/app/data/job";
 
@@ -255,7 +255,7 @@ export default function JobModal({
             />
           </div>
 
-          <div className="h-[1px] bg-neutral-300 my-4 w-full" />
+          <div className="h-px bg-neutral-300 my-4 w-full" />
 
           {/* Salary */}
           <JobSalaryInput
@@ -284,7 +284,7 @@ export default function JobModal({
           <button
             onClick={handleSubmit}
             disabled={!isFormValid}
-            className={`text-m-bold px-4 py-2 rounded-[8px] transition-colors ${
+            className={`text-m-bold px-4 py-2 rounded-xl transition-colors ${
               isFormValid
                 ? "bg-primary-main hover:bg-primary-hover text-white cursor-pointer"
                 : "bg-gray-300 text-gray-500 cursor-not-allowed"
