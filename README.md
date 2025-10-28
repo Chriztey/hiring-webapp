@@ -103,7 +103,7 @@ To open the UI test viewer:
 npx playwright test --ui
 ```
 
-🧱 Future Improvements
+## 🧱 Future Improvements
 
 
  Add more detailed Playwright coverage for edge cases.
@@ -112,6 +112,6 @@ npx playwright test --ui
 
  Add dark mode toggle for better UX.
 
-📝 License
+## 📝 License
 
 This project is for Case Study — intended solely for assessment and demonstration purposes.
