@@ -30,7 +30,7 @@ export default function ManageCandidatesPage() {
       setIsLoading(true);
 
       try {
-        // ✅ Fetch candidates related to this job
+        // fetch candidates related to this job
         const { data: submissions, error } = await supabase
           .from("resume_submissions")
           .select("*")
@@ -40,7 +40,7 @@ export default function ManageCandidatesPage() {
 
         setCandidates(submissions || []);
 
-        // ✅ Optionally fetch job title
+        // Optionally fetch job title
         const { data: jobData, error: jobError } = await supabase
           .from("job")
           .select("title")
@@ -61,12 +61,13 @@ export default function ManageCandidatesPage() {
   }, [jobId]);
 
   const handleBack = () => {
-    router.push("/joblist"); // ✅ navigate back
+    router.push("/joblist"); // navigate back
   };
 
   return (
     <div className="space-y-6 p-6">
       {/* Header */}
+
       <div className="flex justify-between items-center">
         <div className="flex items-center gap-2">
           <button
@@ -83,7 +84,7 @@ export default function ManageCandidatesPage() {
 
         <div className="flex items-center gap-2">
           <div className="w-8 h-8 bg-primary-main text-white rounded-full flex items-center justify-center text-sm font-semibold">
-            M
+            A
           </div>
         </div>
       </div>

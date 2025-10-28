@@ -1,29 +1,3 @@
-// "use client";
-// import { useState, useEffect } from "react";
-// import { provinces } from "@/app/data/provinces";
-
-// export default function DomicileSelect() {
-//   const [selected, setSelected] = useState("");
-
-//   return (
-//     <div className="relative overflow-visible text-s-bold">
-//       {/* <label className="block font-medium mb-1">Domicile *</label> */}
-//       <select
-//         className="w-full border-2 rounded-md py-2 px-3"
-//         value={selected}
-//         onChange={(e) => setSelected(e.target.value)}
-//       >
-//         <option value="">Select Province</option>
-//         {provinces.map((prov) => (
-//           <option key={prov.id} value={prov.name}>
-//             {prov.name}
-//           </option>
-//         ))}
-//       </select>
-//     </div>
-//   );
-// }
-
 "use client";
 import { provinces } from "@/app/data/provinces";
 

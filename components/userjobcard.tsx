@@ -1,4 +1,3 @@
-// components/JobCard.tsx
 import { Job } from "@/app/data/job";
 import { formatCurrency } from "@/app/utils/format";
 

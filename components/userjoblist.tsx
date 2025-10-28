@@ -1,4 +1,3 @@
-// components/JobList.tsx
 import { Job } from "@/app/data/job";
 import UserJobCard from "@/components/userjobcard";
 interface JobListProps {
