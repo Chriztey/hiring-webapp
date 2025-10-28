@@ -4,11 +4,14 @@ import { useRouter } from "next/navigation";
 import { sendLoginLink } from "../lib/emailLinkAuth";
 import { handleGoogleLogin } from "../lib/googleLoginAuth";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../store";
 
 export default function RegisterPage() {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
   const router = useRouter();
+  const dispatch = useDispatch<AppDispatch>();
 
   const handleSendLink = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -23,7 +26,7 @@ export default function RegisterPage() {
 
   const onGoogleClick = async () => {
     try {
-      const user = await handleGoogleLogin();
+      const user = await handleGoogleLogin(dispatch);
       console.log("✅ Logged in as:", user.email);
       router.replace("/"); // your home will auto-redirect based on role
     } catch (error) {

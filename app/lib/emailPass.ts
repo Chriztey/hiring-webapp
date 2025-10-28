@@ -1,9 +1,14 @@
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth, db } from "./firebase"; 
+import { AppDispatch } from "../store";
+import { setUser, startLoading } from "../store/slices/authSlice";
 
-export async function loginWithEmailPassword(email: string, password: string) {
+
+export async function loginWithEmailPassword(email: string, password: string, dispatch: AppDispatch) {
   try {
+
+    dispatch(startLoading());
     const result = await signInWithEmailAndPassword(auth, email, password);
     const user = result.user;
 
@@ -22,6 +27,16 @@ export async function loginWithEmailPassword(email: string, password: string) {
         createdAt: new Date()
       });
     }
+
+    // Dispatch user info to redux
+    dispatch(
+      setUser({
+        uid: user.uid,
+        email: user.email || "",
+        role: (snapshot.data()?.role as "admin" | "user") || "user",
+      })
+    );
+
 
     return { user, role };
   } catch (error: any) {

@@ -5,6 +5,8 @@ import {
   signInWithEmailLink,
 } from "firebase/auth";
 import { doc, setDoc, getDoc } from "firebase/firestore";
+import { AppDispatch } from "../store";
+import { setUser, startLoading } from "../store/slices/authSlice";
 
 const actionCodeSettings = {
   url: process.env.NEXT_PUBLIC_EMAIL_LINK_REDIRECT_URL || "http://localhost:3000/",
@@ -16,7 +18,7 @@ export async function sendLoginLink(email: string) {
   window.localStorage.setItem("emailForSignIn", email);
 }
 
-export async function completeSignIn() {
+export async function completeSignIn(dispatch: AppDispatch) {
   if (isSignInWithEmailLink(auth, window.location.href)) {
     let email = window.localStorage.getItem("emailForSignIn");
     if (!email) {
@@ -37,7 +39,19 @@ export async function completeSignIn() {
       });
     }
 
+    // Dispatch user info to redux
+    const role = snapshot.exists() ? (snapshot.data()?.role as "admin" | "user") : "user";
+dispatch(
+  setUser({
+    uid: user.uid,
+    email: user.email || "",
+    role,
+  })
+);
+
+
     return user;
   }
   return null;
 }
+

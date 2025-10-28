@@ -5,6 +5,8 @@ import { sendLoginLink, completeSignIn } from "../lib/emailLinkAuth";
 import { useRouter } from "next/navigation";
 import { handleGoogleLogin } from "../lib/googleLoginAuth";
 import { loginWithEmailPassword } from "../lib/emailPass";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../store";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -13,10 +15,11 @@ export default function LoginPage() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const dispatch = useDispatch<AppDispatch>();
 
   // Handle redirect link from email
   useEffect(() => {
-    completeSignIn().then((user) => {
+    completeSignIn(dispatch).then((user) => {
       if (user) {
         router.push("/"); // redirect to home after login
       }
@@ -29,7 +32,11 @@ export default function LoginPage() {
     setError("");
 
     try {
-      const { user, role } = await loginWithEmailPassword(email, password);
+      const { user, role } = await loginWithEmailPassword(
+        email,
+        password,
+        dispatch
+      );
       console.log("Logged in user:", user, "Role:", role);
       router.replace("/"); // redirect after successful login
     } catch (err: any) {
@@ -52,7 +59,7 @@ export default function LoginPage() {
 
   const onGoogleClick = async () => {
     try {
-      const user = await handleGoogleLogin();
+      const user = await handleGoogleLogin(dispatch);
       console.log("✅ Logged in as:", user.email);
       router.replace("/"); // your home will auto-redirect based on role
     } catch (error) {
