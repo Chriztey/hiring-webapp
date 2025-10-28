@@ -14,12 +14,50 @@ This project implements a **two-role hiring management system**:
 ### 👨‍💻 Applicant (Job Seeker)
 - View and apply for active job postings.  
 - Application form fields adapt dynamically based on backend configuration.  
-- Capture profile picture via webcam and hand gestures (1️⃣ 2️⃣ 3️⃣).  
+- Capture profile picture via webcam and hand gestures (1️⃣ 2️⃣ 3️⃣).
+
+<h2 align="center">🎥 Demo Video</h2>
+<p align="center">
+  <a href="https://youtu.be/llAJPq5vP10" target="_blank">
+    <img src="https://img.youtube.com/vi/llAJPq5vP10/hqdefault.jpg" alt="Watch the demo video" width="480">
+  </a>
+</p>
 
 The main focus of this project is:
 - Translating **Figma design** and **PRD requirements** into a functional, responsive web app.  
 - Demonstrating **dynamic frontend behavior** and **clean, modular code architecture**.  
 - Providing a **pixel-perfect**, **accessible**, and **enterprise-grade** user experience.
+
+---
+## 🌐 Deployed App
+Live Demo: [https://yourproject.vercel.app](https://yourproject.vercel.app)
+
+---
+
+## 🔐 Authentication and Authorization
+
+The application uses **Firebase Authentication** and includes three authentication methods:
+
+1. **Email Link Sign-In** – Users receive a secure sign-in link via email.  
+   *(Note: Check the spam folder as the link may sometimes be filtered there.)*
+
+2. **Google Sign-In** – Simplified one-click login using a Google account.
+
+3. **Email and Password** – Users can register directly using an email and password combination.
+
+All new users are automatically registered under the **Applicant (User)** role.  
+To assign the **Admin** role, update the user’s role field manually in **Firebase Firestore**.  
+This allows flexible role-based testing and ensures secure role management.
+
+### 🧪 Demo Credentials (for evaluation)
+
+**User Account**  
+- Email: `user@rakatest.com`  
+- Password: `rakatest`
+
+**Admin Account**  
+- Email: `admin@rakatest.com`  
+- Password: `rakatest`
 
 ---
 
