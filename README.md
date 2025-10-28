@@ -104,13 +104,16 @@ npx playwright test --ui
 ```
 
 ## 🧱 Future Improvements
+ - Add more detailed Playwright coverage for edge cases.
+ - Improve accessibility (focus rings, ARIA roles).
+ - Add dark mode toggle for better UX.
 
-
- Add more detailed Playwright coverage for edge cases.
-
- Improve accessibility (focus rings, ARIA roles).
-
- Add dark mode toggle for better UX.
+## ⚠️ Known Limitations
+ - 🧱 **Backend Integration Simplified** — uses Supabase and Firebase in combination instead of a full backend API.  
+ - 🔁 **Column reordering** implemented with basic logic; not persisted across sessions yet.  
+ - 🧩 **Form validation** currently based on front-end schema from Supabase response (no deep nested field validation).  
+ - 📱 Some spacing may slightly differ from Figma on smaller viewports due to Tailwind breakpoints.  
+ - 🧾 No authentication persistence (session restore) beyond Firebase default — would need additional logic for production.
 
 ## 📝 License
 
