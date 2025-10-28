@@ -6,6 +6,7 @@ import DomicileSelect from "./domicileselect";
 import CountrySelect from "./countryselect";
 import { useRouter } from "next/navigation";
 import { supabase } from "@/services/supabase";
+import HandGestureCamera from "@/components/handgestures/HandGestureCamera";
 
 interface ResumeFormProps {
   job: Job;
@@ -36,11 +37,24 @@ const initialValues: Values = {
   linkedinLink: "",
 };
 
+const base64ToBlob = (base64: string) => {
+  const byteString = atob(base64.split(",")[1]);
+  const ab = new ArrayBuffer(byteString.length);
+  const ia = new Uint8Array(ab);
+  for (let i = 0; i < byteString.length; i++) {
+    ia[i] = byteString.charCodeAt(i);
+  }
+  return new Blob([ab], { type: "image/jpeg" });
+};
+
 const ResumeForm: React.FC<ResumeFormProps> = ({ job }) => {
   const { formFields } = job;
   const [values, setValues] = useState<Values>(initialValues);
   const [errors, setErrors] = useState<Errors>({});
   const [touched, setTouched] = useState<Touched>({});
+
+  const [showCameraModal, setShowCameraModal] = useState(false); // for opening camera modal
+  const [photoUrl, setPhotoUrl] = useState(""); // store uploaded photo URL
 
   const isOn = (f: FieldStatus) => f !== "Off";
   const isRequired = (f: FieldStatus) => f === "Mandatory";
@@ -227,6 +241,7 @@ const ResumeForm: React.FC<ResumeFormProps> = ({ job }) => {
       phoneNumber: values.phoneNumber,
       email: values.email,
       linkedinLink: values.linkedinLink,
+      photoProfile: photoUrl,
     };
 
     console.log("Submitting to Supabase:", payload);
@@ -282,10 +297,43 @@ const ResumeForm: React.FC<ResumeFormProps> = ({ job }) => {
           <p className="text-danger-main">* Required</p>
 
           <span>Photo Profile</span>
-          <img src="/profilepicture.svg" alt="job-logo" />
+          {photoUrl ? (
+            <img
+              src={photoUrl}
+              alt="Profile"
+              className="w-32 h-32 object-cover rounded-s border"
+            />
+          ) : (
+            <img
+              src="/profilepicture.svg"
+              alt="job-logo"
+              className="w-32 h-32 object-cover rounded-s border"
+            />
+          )}
+
+          {/* <img src="/profilepicture.svg" alt="job-logo" />
+          
+          {photoUrl && (
+            <div className="mt-2 flex flex-col items-center">
+              <img
+                src={photoUrl}
+                alt="Profile"
+                className="w-24 h-24 object-cover rounded-full border"
+              />
+              <button
+                type="button"
+                onClick={() => setPhotoUrl("")}
+                className="text-sm text-red-500 mt-2"
+              >
+                Retake
+              </button>
+            </div>
+          )} */}
+
           <button
             type="button"
             className="bg-neutral-10 rounded-xl border border-neutral-40 py-1 px-4 text-m-bold text-neutral-100"
+            onClick={() => setShowCameraModal(true)}
           >
             <i className="ri-upload-2-fill pr-1"></i>
             Take a Picture
@@ -396,7 +444,82 @@ const ResumeForm: React.FC<ResumeFormProps> = ({ job }) => {
       >
         Submit
       </button>
+
+      {showCameraModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+          <div className="bg-white rounded-xl shadow-lg p-4 max-w-lg w-full relative">
+            <div className="flex flex-row justify-between px-2">
+              <p>
+                <span className="font-bold">Raise Your Hand to Capture</span>{" "}
+                <br></br>
+                <span className="text-[12px] font-medium">
+                  We’ll take the photo once your hand pose is detected.
+                </span>
+              </p>
+              <button
+                type="button"
+                onClick={() => setShowCameraModal(false)}
+                className=" text-neutral-500 hover:text-neutral-800 text-lg font-bold"
+              >
+                ✕
+              </button>
+            </div>
+
+            <HandGestureCamera
+              onPhotoTaken={async (base64Url: string) => {
+                // 1. Upload to Supabase Storage
+                const fileName = `profile-${Date.now()}.jpg`;
+                const { data, error: uploadError } = await supabase.storage
+                  .from("profile-photos") // your bucket name
+                  .upload(fileName, base64ToBlob(base64Url), {
+                    contentType: "image/jpeg",
+                  });
+
+                if (uploadError) {
+                  console.error("Upload error:", uploadError);
+                  alert("Failed to upload photo.");
+                  return;
+                }
+
+                // 2. Get public URL
+                const { data: publicData } = supabase.storage
+                  .from("profile-photos")
+                  .getPublicUrl(fileName);
+
+                if (!publicData?.publicUrl) {
+                  console.error("Failed to get photo URL.");
+                  alert("Failed to get photo URL.");
+                  return;
+                }
+
+                // 3. Save URL to state
+                setPhotoUrl(publicData.publicUrl);
+                setShowCameraModal(false); // close modal
+              }}
+            />
+
+            <div className=" flex flex-col space-y-4 text-[12px] font-medium px-2">
+              <p>
+                To take a picture, follow the hand poses in the order shown
+                below.
+                <br></br>The system will automatically capture the image once
+                the final pose is detected.
+              </p>
+
+              <div className="flex flex-row gap-2 justify-center items-center">
+                <img src="/one.svg" alt="one"></img>
+                <p className="text-lg">{">"}</p>
+                <img src="/two.svg" alt="two"></img>
+                <p className="text-lg">{">"}</p>
+                <img src="/three.svg" alt="three"></img>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </form>
+
+    // Modal
   );
 };
 

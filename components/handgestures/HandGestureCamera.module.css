@@ -1,0 +1,188 @@
+/* --- Main Layout --- */
+.videoView {
+  width: 100%;
+  max-width: 1280px; /* Constrain video size */
+  margin: 20px auto;
+  text-align: center;
+}
+
+.videoContainer {
+  position: relative;
+  width: 100%;
+  /* 4:3 Aspect Ratio */
+  padding-top: 56.25%;
+  margin-top: 20px;
+  border-radius: 12px;
+  overflow: hidden; /* Clips the video/canvas to the border-radius */
+  background-color: #000;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+/* --- Webcam Button --- */
+.webcamButton {
+  background-color: #ff4757;
+  color: white;
+  font-weight: bold;
+}
+
+.webcamButton:hover {
+  background-color: #e04050;
+}
+
+/* --- Video & Canvas --- */
+.webcamVideo,
+.output_canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Ensures video fills the container */
+
+  /* Flip horizontally to create mirror effect */
+  /* transform: rotateY(180deg);
+  -webkit-transform: rotateY(180deg);
+  -moz-transform: rotateY(180deg); */
+}
+
+.output_canvas {
+  z-index: 5; /* Canvas for drawings goes above video */
+}
+
+/* --- Countdown Overlay --- */
+.countdownOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  display: none; /* Hidden by default */
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+}
+
+.countdownNumber {
+  font-size: 15vw; /* Responsive font size */
+  font-weight: bold;
+  color: #fff;
+  text-shadow: 0 0 20px rgba(255, 255, 255, 0.8);
+  animation: countdownPulse 1s ease-in-out;
+}
+
+@keyframes countdownPulse {
+  0% { transform: scale(0.5); opacity: 0; }
+  50% { transform: scale(1.2); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+/* --- State & Log Display --- */
+.countdownDisplay {
+  text-align: center;
+  margin: 20px 0;
+  background: rgba(0, 0, 0, 0.2);
+  padding: 15px;
+  border-radius: 8px;
+}
+
+.countdownDisplay h3 {
+  font-size: 48px;
+  margin: 10px 0;
+  color: #ff6b6b; /* Default color, JS will change it */
+}
+
+.countdownDisplay p {
+  font-size: 18px;
+  color: #e0e0e0;
+  margin: 0;
+}
+
+.liveLog {
+  background: rgba(0, 0, 0, 0.25);
+  padding: 15px;
+  margin: 20px 0;
+  border-radius: 8px;
+  text-align: left;
+}
+
+.liveLog h4 {
+  margin-top: 0;
+  margin-bottom: 10px;
+  text-align: center;
+  color: #fff;
+}
+
+.fingerCountDisplay {
+  font-size: 24px;
+  font-weight: bold;
+  margin: 5px 0;
+  color: #4db8ff;
+  text-align: center;
+}
+
+.gestureStatusDisplay {
+  font-size: 16px;
+  margin: 5px 0 15px 0;
+  color: #ccc;
+  text-align: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  padding-bottom: 10px;
+}
+
+.logHistory {
+  max-height: 150px;
+  overflow-y: auto;
+  background: rgba(0, 0, 0, 0.3);
+  padding: 10px;
+  border-radius: 4px;
+  font-family: monospace;
+  font-size: 12px;
+  color: #f1f1f1;
+}
+
+/* --- Photo Display & Controls --- */
+.photoCanvas {
+  max-width: 100%;
+  border: 4px solid #fff;
+  border-radius: 8px;
+  margin-top: 10px;
+  background-color: #222;
+}
+
+.actionButton {
+  background-color: #4CAF50; /* Green for download */
+  color: white;
+  margin: 5px;
+}
+
+.actionButton:last-child {
+  background-color: #f0f0f0; /* Lighter for retake */
+  color: #333;
+}
+
+.actionButton:last-child:hover {
+  background-color: #ddd;
+}
+
+.gestureTip {
+  position: absolute;
+  bottom: 3px;         /* 3px from the bottom */
+  left: 50%;           /* Centered */
+  transform: translateX(-50%); /* (part 2 of centering) */
+  
+  width: auto;         /* Fit the content */
+  white-space: nowrap; /* Keep it on one line */
+  
+  padding: 3px 10px;
+  background: rgba(0, 0, 0, 0.6);
+  color: #fff;
+  
+  font-size: 12px;     /* Small font */
+  font-weight: 500;
+  
+  border-radius: 4px;
+  z-index: 6;          /* Above video/canvas, below countdown */
+  pointer-events: none; /* So it can't be clicked */
+}
+
