@@ -55,6 +55,7 @@ const ResumeForm: React.FC<ResumeFormProps> = ({ job }) => {
 
   const [showCameraModal, setShowCameraModal] = useState(false); // for opening camera modal
   const [photoUrl, setPhotoUrl] = useState(""); // store uploaded photo URL
+  const [photoBase64, setPhotoBase64] = useState<string | null>(null);
 
   const isOn = (f: FieldStatus) => f !== "Off";
   const isRequired = (f: FieldStatus) => f === "Mandatory";
@@ -207,6 +208,64 @@ const ResumeForm: React.FC<ResumeFormProps> = ({ job }) => {
 
   // --- Submit ---
 
+  // const handleSubmit = async (e: React.FormEvent) => {
+  //   e.preventDefault();
+
+  //   const allTouched: Touched = {
+  //     fullName: true,
+  //     dateOfBirth: true,
+  //     gender: true,
+  //     domicile: true,
+  //     phoneNumber: true,
+  //     email: true,
+  //     linkedinLink: true,
+  //   };
+  //   setTouched(allTouched);
+
+  //   const errs = validate(values);
+  //   setErrors(errs);
+
+  //   if (Object.keys(errs).length > 0) {
+  //     const first = Object.keys(errs)[0] as keyof Values;
+  //     const el = document.getElementsByName(String(first))[0];
+  //     if (el) el.scrollIntoView({ behavior: "smooth", block: "center" });
+  //     return;
+  //   }
+
+  //   // ✅ Construct payload for Supabase
+  //   const payload = {
+  //     job_id: job.id, // Foreign key
+  //     fullName: values.fullName,
+  //     dateOfBirth: values.dateOfBirth,
+  //     gender: values.gender,
+  //     domicile: values.domicile,
+  //     phoneNumber: values.phoneNumber,
+  //     email: values.email,
+  //     linkedinLink: values.linkedinLink,
+  //     photoProfile: photoUrl,
+  //   };
+
+  //   console.log("Submitting to Supabase:", payload);
+
+  //   // ✅ Insert into Supabase
+  //   const { data, error } = await supabase
+  //     .from("resume_submissions")
+  //     .insert([payload])
+  //     .select();
+
+  //   if (error) {
+  //     console.error("❌ Supabase insert error:", error);
+  //     alert("Failed to submit application. Please try again.");
+  //     return;
+  //   }
+
+  //   console.log("✅ Submitted successfully:", data);
+
+  //   // Optionally show success and redirect or reset form
+  //   alert("Your application has been submitted!");
+  //   setValues(initialValues);
+  //   router.push(`/apply/success`); // optional redirect
+  // };
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -231,9 +290,28 @@ const ResumeForm: React.FC<ResumeFormProps> = ({ job }) => {
       return;
     }
 
-    // ✅ Construct payload for Supabase
+    // --- Upload photo if user has taken one ---
+    let uploadedPhotoUrl: string | null = null;
+    if (photoBase64) {
+      const fileName = `profile-${Date.now()}.jpg`;
+      const { error: uploadError } = await supabase.storage
+        .from("profile-photos")
+        .upload(fileName, base64ToBlob(photoBase64), {
+          contentType: "image/jpeg",
+        });
+
+      if (uploadError) return alert("Failed to upload photo.");
+
+      const { data: publicData } = supabase.storage
+        .from("profile-photos")
+        .getPublicUrl(fileName);
+
+      uploadedPhotoUrl = publicData?.publicUrl ?? null;
+    }
+
+    // ✅ Construct payload with uploaded photo URL
     const payload = {
-      job_id: job.id, // Foreign key
+      job_id: job.id,
       fullName: values.fullName,
       dateOfBirth: values.dateOfBirth,
       gender: values.gender,
@@ -241,12 +319,11 @@ const ResumeForm: React.FC<ResumeFormProps> = ({ job }) => {
       phoneNumber: values.phoneNumber,
       email: values.email,
       linkedinLink: values.linkedinLink,
-      photoProfile: photoUrl,
+      photoProfile: uploadedPhotoUrl,
     };
 
     console.log("Submitting to Supabase:", payload);
 
-    // ✅ Insert into Supabase
     const { data, error } = await supabase
       .from("resume_submissions")
       .insert([payload])
@@ -258,12 +335,10 @@ const ResumeForm: React.FC<ResumeFormProps> = ({ job }) => {
       return;
     }
 
-    console.log("✅ Submitted successfully:", data);
-
-    // Optionally show success and redirect or reset form
     alert("Your application has been submitted!");
     setValues(initialValues);
-    router.push(`/apply/success`); // optional redirect
+    setPhotoBase64(null); // reset preview
+    router.push(`/apply/success`);
   };
 
   // --- Back Button ---
@@ -297,9 +372,9 @@ const ResumeForm: React.FC<ResumeFormProps> = ({ job }) => {
           <p className="text-danger-main">* Required</p>
 
           <span>Photo Profile</span>
-          {photoUrl ? (
+          {photoBase64 ? (
             <img
-              src={photoUrl}
+              src={photoBase64}
               alt="Profile"
               className="w-32 h-32 object-cover rounded-s border"
             />
@@ -464,8 +539,7 @@ const ResumeForm: React.FC<ResumeFormProps> = ({ job }) => {
                 ✕
               </button>
             </div>
-
-            <HandGestureCamera
+            {/* <HandGestureCamera
               onPhotoTaken={async (base64Url: string) => {
                 // 1. Upload to Supabase Storage
                 const fileName = `profile-${Date.now()}.jpg`;
@@ -496,8 +570,14 @@ const ResumeForm: React.FC<ResumeFormProps> = ({ job }) => {
                 setPhotoUrl(publicData.publicUrl);
                 setShowCameraModal(false); // close modal
               }}
+            /> */}
+            {/* // on photo taken */}
+            <HandGestureCamera
+              onPhotoTaken={(base64Url: string) => {
+                setPhotoBase64(base64Url); // just preview
+                setShowCameraModal(false);
+              }}
             />
-
             <div className=" flex flex-col space-y-4 text-[12px] font-medium px-2">
               <p>
                 To take a picture, follow the hand poses in the order shown
