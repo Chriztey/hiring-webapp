@@ -11,7 +11,7 @@ This project implements a **two-role hiring management system**:
 - Create and configure job postings dynamically.  
 - Manage and review candidate applications via a reorderable table view.
 
-### 👨‍💻 Applicant (Job Seeker)
+### 👨‍💻 User (Job Seeker)
 - View and apply for active job postings.  
 - Application form fields adapt dynamically based on backend configuration.  
 - Capture profile picture via webcam and hand gestures (1️⃣ 2️⃣ 3️⃣).
@@ -100,7 +100,7 @@ Introducing a global state library like Redux or Zustand would add unnecessary c
 
 ### 1️⃣ Clone this repository
 ```bash
-git clone https://github.com/yourusername/hiring-webapp.git
+git clone https://github.com/chriztey/hiring-webapp.git
 cd hiring-webapp
 ```
 
