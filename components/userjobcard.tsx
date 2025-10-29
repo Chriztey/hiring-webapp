@@ -5,12 +5,14 @@ interface JobCardProps {
   job: Job;
   isSelected: boolean;
   onSelect: (job: Job) => void;
+  isApplied?: boolean;
 }
 
 export default function UserJobCard({
   job,
   isSelected,
   onSelect,
+  isApplied = false,
 }: JobCardProps) {
   return (
     <div
@@ -29,6 +31,11 @@ export default function UserJobCard({
           <h3 className="text-l-bold text-neutral-90">{job.title}</h3>
           <p className="text-neutral-90 text-m-regular">{job.company}</p>
         </div>
+        {isApplied && (
+          <div className="ml-auto mt-2 px-2 py-1 text-white bg-success-main rounded-sm text-s-bold w-max">
+            Applied
+          </div>
+        )}
       </div>
 
       <div className="flex items-center gap-2 text-neutral-80 text-s-regular">

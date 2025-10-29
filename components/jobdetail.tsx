@@ -4,9 +4,10 @@ import { useRouter } from "next/navigation";
 
 interface JobDetailProps {
   job: Job | null;
+  isApplied?: boolean;
 }
 
-export default function JobDetail({ job }: JobDetailProps) {
+export default function JobDetail({ job, isApplied = false }: JobDetailProps) {
   const router = useRouter();
 
   const handleApply = () => {
@@ -39,11 +40,22 @@ export default function JobDetail({ job }: JobDetailProps) {
             </div>
           </div>
 
-          <button
+          {/* <button
             onClick={handleApply}
             className="bg-secondary-main text-neutral-90 text-m-bold px-4 py-1 rounded-xl hover:bg-secondary-hover transition"
           >
             Apply
+          </button> */}
+          <button
+            onClick={handleApply}
+            disabled={isApplied}
+            className={`${
+              isApplied
+                ? "bg-neutral-30 text-neutral-60 cursor-not-allowed"
+                : "bg-secondary-main text-neutral-90 hover:bg-secondary-hover"
+            } text-m-bold px-4 py-1 rounded-xl transition`}
+          >
+            {isApplied ? "Applied" : "Apply"}
           </button>
         </div>
 

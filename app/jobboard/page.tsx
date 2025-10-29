@@ -7,35 +7,87 @@ import JobDetail from "@/components/jobdetail";
 import EmptyStateJob from "@/components/emptystatejob";
 import TopBar from "@/components/topbar";
 import { supabase } from "../../services/supabase";
+import { auth } from "@/services/firebase";
+import { onAuthStateChanged } from "@firebase/auth";
 
 export default function JobBoardPage() {
   const [jobs, setJobs] = useState<Job[]>([]);
   const [selectedJob, setSelectedJob] = useState<Job | null>(null);
   const [isLoading, setLoading] = useState(true);
+  const [appliedJobIds, setAppliedJobIds] = useState<string[]>([]);
+
+  // useEffect(() => {
+  //   async function fetchJobs() {
+  //     setLoading(true);
+  //     try {
+  //       const { data, error } = await supabase
+  //         .from("job")
+  //         .select("*")
+  //         .eq("status", "Active")
+  //         .order("startDate", { ascending: false }); // latest first
+
+  //       if (error) {
+  //         throw error;
+  //       }
+
+  //       setJobs(data || []);
+  //     } catch (err) {
+  //       console.error("Failed to fetch jobs", err);
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   }
+
+  //   fetchJobs();
+  // }, []);
 
   useEffect(() => {
-    async function fetchJobs() {
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      if (!user) {
+        console.error("User not logged in");
+        setLoading(false);
+        return;
+      }
+
+      const userUid = user.uid;
       setLoading(true);
+
       try {
-        const { data, error } = await supabase
+        // 1️⃣ Fetch active jobs
+        const { data: jobsData, error: jobsError } = await supabase
           .from("job")
           .select("*")
           .eq("status", "Active")
-          .order("startDate", { ascending: false }); // latest first
+          .order("startDate", { ascending: false });
 
-        if (error) {
-          throw error;
-        }
+        if (jobsError) throw jobsError;
 
-        setJobs(data || []);
+        // 2️⃣ Fetch applied jobs
+        const { data: appliedData, error: appliedError } = await supabase
+          .from("resume_submissions")
+          .select("job_id")
+          .eq("uid", userUid);
+
+        if (appliedError) throw appliedError;
+
+        const appliedJobIds = (appliedData || []).map((item) => item.job_id);
+        setAppliedJobIds(appliedJobIds);
+
+        // 3️⃣ Merge applied info into jobs
+        const jobsWithAppliedStatus = (jobsData || []).map((job) => ({
+          ...job,
+          isApplied: appliedJobIds.includes(job.id),
+        }));
+
+        setJobs(jobsWithAppliedStatus);
       } catch (err) {
         console.error("Failed to fetch jobs", err);
       } finally {
         setLoading(false);
       }
-    }
+    });
 
-    fetchJobs();
+    return () => unsubscribe(); // cleanup on unmount
   }, []);
 
   if (isLoading) {
@@ -60,6 +112,7 @@ export default function JobBoardPage() {
               jobs={jobs}
               selectedJob={selectedJob}
               onSelect={setSelectedJob}
+              appliedJobIds={appliedJobIds} // ✅ pass applied IDs
             />
           </div>
 
@@ -68,13 +121,22 @@ export default function JobBoardPage() {
             {/* Small screens: show all job details stacked vertically */}
             <div className="block md:hidden space-y-4 ">
               {jobs.map((job) => (
-                <JobDetail key={job.id} job={job} />
+                <JobDetail
+                  key={job.id}
+                  job={job}
+                  isApplied={appliedJobIds.includes(job.id)}
+                />
               ))}
             </div>
 
             {/* Medium+ screens: show selected job */}
             <div className="hidden md:block">
-              <JobDetail job={selectedJob} />
+              <JobDetail
+                isApplied={
+                  selectedJob ? appliedJobIds.includes(selectedJob.id) : false
+                }
+                job={selectedJob}
+              />
             </div>
           </div>
         </div>

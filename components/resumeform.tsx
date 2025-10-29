@@ -94,9 +94,32 @@ const ResumeForm: React.FC<ResumeFormProps> = ({ job }) => {
       if (!v.fullName.trim()) e.fullName = "Required";
     }
 
+    // if (isOn(formFields.dateOfBirth) && isRequired(formFields.dateOfBirth)) {
+    //   if (!v.dateOfBirth) e.dateOfBirth = "Required";
+    //   else if (!pastDate(v.dateOfBirth)) e.dateOfBirth = "Select a past date";
+    // }
+
+    // --- Date of Birth validation ---
     if (isOn(formFields.dateOfBirth) && isRequired(formFields.dateOfBirth)) {
-      if (!v.dateOfBirth) e.dateOfBirth = "Required";
-      else if (!pastDate(v.dateOfBirth)) e.dateOfBirth = "Select a past date";
+      if (!v.dateOfBirth) {
+        e.dateOfBirth = "Required";
+      } else if (!pastDate(v.dateOfBirth)) {
+        e.dateOfBirth = "You must be at least 17 years old";
+      } else {
+        // Check age >= 17
+        const birthDate = new Date(v.dateOfBirth + "T00:00:00");
+        const today = new Date();
+        const age = today.getFullYear() - birthDate.getFullYear();
+        const m = today.getMonth() - birthDate.getMonth();
+        const dayDiff = today.getDate() - birthDate.getDate();
+
+        // Adjust if birth month/day not passed yet
+        const actualAge = m < 0 || (m === 0 && dayDiff < 0) ? age - 1 : age;
+
+        if (actualAge < 17) {
+          e.dateOfBirth = "You must be at least 17 years old";
+        }
+      }
     }
 
     if (isOn(formFields.gender) && isRequired(formFields.gender)) {
@@ -361,8 +384,9 @@ const ResumeForm: React.FC<ResumeFormProps> = ({ job }) => {
   // --- Render ---
   return (
     <form
+      onSubmit={(e) => e.preventDefault()}
       className="p-6 bg-white rounded-lg shadow w-full max-w-lg"
-      onSubmit={handleSubmit}
+      // onSubmit={handleSubmit}
     >
       <div className="border-2">
         <div className="px-6 pt-8 flex flex-row gap-4 items-center">
@@ -524,7 +548,8 @@ const ResumeForm: React.FC<ResumeFormProps> = ({ job }) => {
       </div>
 
       <button
-        type="submit"
+        type="button"
+        onClick={handleSubmit}
         className="mt-6 bg-primary-main text-white px-6 py-2 rounded-xl hover:bg-primary-hover w-full text-l-bold"
       >
         Submit
