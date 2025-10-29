@@ -100,8 +100,8 @@ Introducing a global state library like Redux or Zustand would add unnecessary c
 
 ### 1️⃣ Clone this repository
 ```bash
-git clone https://github.com/yourusername/rakamin-frontend-case.git
-cd rakamin-frontend-case
+git clone https://github.com/yourusername/hiring-webapp.git
+cd hiring-webapp
 ```
 
 ### 2️⃣ Install dependencies
