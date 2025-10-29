@@ -85,7 +85,6 @@ The application uses **Firebase Authentication** and includes three authenticati
 | **Firestore** | [Firebase Firestore](https://firebase.google.com/docs/firestore) | Used to store user metadata such as role and profile info |
 | **State Management** | React built-in hooks (`useState`, `useEffect`, `useContext`) | Simple local state handling — **no Redux/Zustand needed** for this project’s scope |
 | **Webcam & Gesture** | @mediapipe/tasks-vision + Browser Webcam API | Detects hand gestures for profile photo capture (user permission required, privacy-friendly) |
-| **Testing** | [Playwright](https://playwright.dev/) | For end-to-end testing of core user flows (job creation, form validation, submission) |
 | **Deployment** | [Vercel](https://vercel.com/) | For hosting and CI/CD integration with Next.js |
 
 ### ⚡ Why no Redux / Zustand?
@@ -190,6 +189,21 @@ If you already configured your environment variables in Vercel, you only need to
 vercel --prod
 ```
 
+⚙️ Email Link Authentication Setup
+
+The project supports Email Link Sign-In via Firebase Authentication.
+To ensure proper redirection after login, update the redirect URL in the file:
+
+features/auth/lib/emailLinkAuth.ts
+
+```
+const actionCodeSettings = {
+  url: process.env.NEXT_PUBLIC_EMAIL_LINK_REDIRECT_URL || "http://localhost:3000/",
+  handleCodeInApp: true,
+};
+```
+
+
 ## 🗄️ Database Structure
 Table: resume_submission
 
@@ -233,24 +247,6 @@ Notes:
 - formFields defines each job’s application form fields and their states (mandatory, optional, or off).
 - The Admin panel dynamically reads this configuration to render form fields for applicants.
 
-## 🧪 Run Tests (Playwright)
-
-Make sure Playwright is installed:
-
-```bash
-npx playwright install
-```
-
-Then run:
-
-```bash
-npx playwright test
-```
-
-To open the UI test viewer:
-```bash
-npx playwright test --ui
-```
 
 ## 🧱 Future Improvements
 🧑‍💼 Applicant Dashboard
@@ -267,7 +263,7 @@ npx playwright test --ui
 
 🧪 Testing and QA
 
-- Expand Playwright coverage to include edge cases, error handling, and authentication flows.
+- Playwright coverage to include edge cases, error handling, and authentication flows.
 - Integrate automated testing via CI/CD (Vercel or GitHub Actions).
 
 ♿ Accessibility Enhancements
