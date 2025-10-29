@@ -16,6 +16,11 @@ This project implements a **two-role hiring management system**:
 - Application form fields adapt dynamically based on backend configuration.  
 - Capture profile picture via webcam and hand gestures (1️⃣ 2️⃣ 3️⃣).
 
+<p align="left">
+  <img src="./public/gesturedemo.gif" alt="App Demo" width="360" />
+</p>
+
+
 
 The main focus of this project is:
 - Translating **Figma design** and **PRD requirements** into a functional, responsive web app.  
@@ -24,7 +29,7 @@ The main focus of this project is:
 
 ---
 ## 🌐 Deployed App
-Live Demo: [https://hiring-webapp-kjy6zc5cq-chrizteys-projects.vercel.app](https://hiring-webapp-kjy6zc5cq-chrizteys-projects.vercel.app)
+Live Demo: [https://hiring-webapp-pi.vercel.app/]( https://hiring-webapp-pi.vercel.app/)
 
 ---
 
@@ -39,9 +44,9 @@ The application uses **Firebase Authentication** and includes three authenticati
 
 3. **Email and Password** – Users can register directly using an email and password combination.
 
-All new users are automatically registered under the **Applicant (User)** role.  
-To assign the **Admin** role, update the user’s role field manually in **Firebase Firestore**.  
-This allows flexible role-based testing and ensures secure role management.
+- All new users are automatically registered under the **Applicant (User)** role.
+- To assign the **Admin** role, update the user’s role field manually in **Firebase Firestore**.
+- This allows flexible role-based testing and ensures secure role management.
 
 ### 🧪 Demo Credentials (for evaluation)
 
@@ -129,6 +134,104 @@ yarn dev
 ```
 
 App will be available at http://localhost:3000
+
+## 🚀 Deployment (Vercel)
+
+This project is deployed using Vercel.
+
+🧩 Build Environment Variables
+
+Vercel allows you to inject environment variables directly into your build step using the --build-env flag.
+
+You can set environment variables like API keys or service URLs when deploying manually from the terminal:
+
+```bash
+vercel --build-env NEXT_PUBLIC_SUPABASE_URL=https://your-supabase-url.supabase.co \
+--build-env NEXT_PUBLIC_SUPABASE_ANON_KEY=your-supabase-anon-key \
+--build-env NEXT_PUBLIC_FIREBASE_API_KEY=your-firebase-api-key \
+--build-env NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=your-firebase-auth-domain \
+--build-env NEXT_PUBLIC_FIREBASE_PROJECT_ID=your-firebase-project-id \
+--build-env NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=your-firebase-storage-bucket \
+--build-env NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=your-firebase-sender-id \
+--build-env NEXT_PUBLIC_FIREBASE_APP_ID=your-firebase-app-id
+```
+
+
+Alternatively, you can set these variables permanently in your Vercel project dashboard under
+Settings → Environment Variables (recommended).
+
+🌐 Production Deployment
+
+To deploy the project to your production domain (as configured in Vercel):
+
+```
+vercel --prod
+```
+
+Or combine both steps (set build-time environment variables + deploy to production):
+
+```
+vercel \
+--build-env NEXT_PUBLIC_SUPABASE_URL=https://your-supabase-url.supabase.co \
+--build-env NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key \
+--build-env NEXT_PUBLIC_FIREBASE_API_KEY=your-firebase-api-key \
+--build-env NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=your-firebase-auth-domain \
+--build-env NEXT_PUBLIC_FIREBASE_PROJECT_ID=your-firebase-project-id \
+--build-env NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=your-firebase-bucket \
+--build-env NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=your-sender-id \
+--build-env NEXT_PUBLIC_FIREBASE_APP_ID=your-app-id \
+--prod
+```
+
+✅ Tip:
+If you already configured your environment variables in Vercel, you only need to run:
+
+```
+vercel --prod
+```
+
+## 🗄️ Database Structure
+Table: resume_submission
+
+| Column           | Type          | Default / Notes                                             | Primary |
+| ---------------- | ------------- | ----------------------------------------------------------- | ------- |
+| **id**           | `int8`        | —                                                           | ✅       |
+| **created_at**   | `timestamptz` | `now()`                                                     | —       |
+| **job_id**       | `int8`        | —                                                           | —       |
+| **fullName**     | `text`        | —                                                           | —       |
+| **dateOfBirth**  | `text`        | —                                                           | —       |
+| **gender**       | `text`        | —                                                           | —       |
+| **domicile**     | `text`        | —                                                           | —       |
+| **phoneNumber**  | `text**       | —                                                           | —       |
+| **email**        | `text`        | —                                                           | —       |
+| **linkedinLink** | `text`        | —                                                           | —       |
+| **photoProfile** | `text`        | Stores the path/URL of the user’s photo in Supabase Storage | —       |
+| **uid**          | `text`        | Firebase Auth UID for unique applicant mapping              | —       |
+
+Notes:
+- photoProfile securely stores the profile photo path in Supabase Storage.
+- uid connects the applicant to their Firebase Auth record.
+
+Table: job
+
+| Column             | Type          | Default / Notes                   | Primary |
+| ------------------ | ------------- | --------------------------------- | ------- |
+| **id**             | `int8`        | —                                 | ✅       |
+| **startDate**      | `timestamptz` | `now()`                           | —       |
+| **title**          | `text`        | —                                 | —       |
+| **candidateCount** | `numeric`     | `'0'::numeric`                    | —       |
+| **minSalary**      | `numeric`     | —                                 | —       |
+| **maxSalary**      | `numeric`     | —                                 | —       |
+| **status**         | `text`        | —                                 | —       |
+| **company**        | `text`        | `'Rakamin'` (default)             | —       |
+| **location**       | `text`        | `'Jakarta, Indonesia'` (default)  | —       |
+| **description**    | `text`        | —                                 | —       |
+| **type**           | `text`        | —                                 | —       |
+| **formFields**     | `jsonb`       | `{}` — dynamic form configuration | —       |
+
+Notes:
+- formFields defines each job’s application form fields and their states (mandatory, optional, or off).
+- The Admin panel dynamically reads this configuration to render form fields for applicants.
 
 ## 🧪 Run Tests (Playwright)
 
