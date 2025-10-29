@@ -286,7 +286,7 @@ export default function HandGestureCamera({ onPhotoTaken }) {
     switch (currentState) {
       case "WAITING_FOR_1":
         if (fingerCount === 1) {
-          captureAndSavePhoto();
+          // captureAndSavePhoto();
           logStateEvent("progress", "Got 1. Waiting for 2...");
           setCurrentState("WAITING_FOR_2");
           setVideoTip("Show a peace sign (Pose 2)");

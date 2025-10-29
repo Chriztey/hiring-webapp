@@ -7,6 +7,9 @@ import CountrySelect from "./countryselect";
 import { useRouter } from "next/navigation";
 import { supabase } from "@/services/supabase";
 import HandGestureCamera from "@/components/handgestures/HandGestureCamera";
+import { auth } from "@/services/firebase";
+
+//
 
 interface ResumeFormProps {
   job: Job;
@@ -309,6 +312,12 @@ const ResumeForm: React.FC<ResumeFormProps> = ({ job }) => {
       uploadedPhotoUrl = publicData?.publicUrl ?? null;
     }
 
+    // --- Get Firebase UID ---
+    const user = auth.currentUser;
+    if (!user) return alert("You must be logged in to submit.");
+    const userUid = user.uid;
+    console.log("User UID:", userUid);
+
     // ✅ Construct payload with uploaded photo URL
     const payload = {
       job_id: job.id,
@@ -320,6 +329,7 @@ const ResumeForm: React.FC<ResumeFormProps> = ({ job }) => {
       email: values.email,
       linkedinLink: values.linkedinLink,
       photoProfile: uploadedPhotoUrl,
+      uid: userUid,
     };
 
     console.log("Submitting to Supabase:", payload);
