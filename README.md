@@ -16,12 +16,6 @@ This project implements a **two-role hiring management system**:
 - Application form fields adapt dynamically based on backend configuration.  
 - Capture profile picture via webcam and hand gestures (1️⃣ 2️⃣ 3️⃣).
 
-<h2 align="center">🎥 Demo Video</h2>
-<p align="center">
-  <a href="https://youtu.be/llAJPq5vP10" target="_blank">
-    <img src="https://img.youtube.com/vi/llAJPq5vP10/hqdefault.jpg" alt="Watch the demo video" width="480">
-  </a>
-</p>
 
 The main focus of this project is:
 - Translating **Figma design** and **PRD requirements** into a functional, responsive web app.  
@@ -58,6 +52,20 @@ This allows flexible role-based testing and ensures secure role management.
 **Admin Account**  
 - Email: `admin@rakatest.com`  
 - Password: `rakatest`
+
+<h2 align="center">🎥 Demo Video [Admin]</h2>
+<p align="center">
+  <a href="https://youtu.be/llAJPq5vP10" target="_blank">
+    <img src="https://img.youtube.com/vi/llAJPq5vP10/hqdefault.jpg" alt="Watch the demo video" width="480">
+  </a>
+</p>
+
+<h2 align="center">🎥 Demo Video [User]</h2>
+<p align="center">
+  <a href="https://youtu.be/1M9PurztVkk" target="_blank">
+    <img src="https://img.youtube.com/vi/1M9PurztVkk/hqdefault.jpg" alt="Watch the demo video" width="480">
+  </a>
+</p>
 
 ---
 
@@ -142,9 +150,44 @@ npx playwright test --ui
 ```
 
 ## 🧱 Future Improvements
- - Add more detailed Playwright coverage for edge cases.
- - Improve accessibility (focus rings, ARIA roles).
- - Add dark mode toggle for better UX.
+🧑‍💼 Applicant Dashboard
+
+- View application history and track job status (e.g., Under Review, Accepted, Rejected).
+- Allow users to upload and manage CVs or portfolios instead of filling only text-based forms.
+- Display personalized job recommendations based on past applications.
+
+🧾 Admin Dashboard
+
+- Centralized dashboard to review, filter, and manage applicants efficiently.
+- Add application progress tracking (e.g., New → Reviewed → Interview → Hired).
+- Include analytics insights: total applicants, conversion rate, and job posting performance.
+
+🧪 Testing and QA
+
+- Expand Playwright coverage to include edge cases, error handling, and authentication flows.
+- Integrate automated testing via CI/CD (Vercel or GitHub Actions).
+
+♿ Accessibility Enhancements
+
+- Improve keyboard navigation, focus rings, and ARIA roles for screen reader support.
+- Add text alternatives for icons and dynamic UI elements.
+
+🎨 User Experience (UX)
+
+- Add a dark mode toggle for better usability and reduced eye strain.
+- Enhance loading states and animations for smoother transitions.
+- Add a multi-step progress indicator on the job application form.
+
+⚙️ System Enhancements
+
+- Implement server-side pagination and filtering for large datasets.
+- Add email notifications for job creation, application submission, and status updates.
+- Enable persistent table configuration (column order, width, filters) across sessions.
+- Introduce role-based dashboards with conditional navigation and analytics.
+
+🖐️ Webcam & Gesture Recognition (Planned Integration)
+
+- Add face alignment and detection for better profile photo accuracy and consistency.
 
 ## ⚠️ Known Limitations
  - 🧱 **Backend Integration Simplified** — uses Supabase and Firebase in combination instead of a full backend API.  
