@@ -371,7 +371,7 @@ const ResumeForm: React.FC<ResumeFormProps> = ({ job }) => {
     alert("Your application has been submitted!");
     setValues(initialValues);
     setPhotoBase64(null); // reset preview
-    router.push(`/apply/success`);
+    router.push(`/apply-success`);
   };
 
   // --- Back Button ---
