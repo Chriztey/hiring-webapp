@@ -30,7 +30,7 @@ The main focus of this project is:
 
 ---
 ## 🌐 Deployed App
-Live Demo: [https://yourproject.vercel.app](https://yourproject.vercel.app)
+Live Demo: [https://hiring-webapp-kjy6zc5cq-chrizteys-projects.vercel.app](https://hiring-webapp-kjy6zc5cq-chrizteys-projects.vercel.app)
 
 ---
 
