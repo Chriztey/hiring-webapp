@@ -71,7 +71,7 @@ This allows flexible role-based testing and ensures secure role management.
 | **Authentication** | [Firebase Auth](https://firebase.google.com/docs/auth) | To manage user roles (Admin / Applicant) |
 | **Firestore** | [Firebase Firestore](https://firebase.google.com/docs/firestore) | Used to store user metadata such as role and profile info |
 | **State Management** | React built-in hooks (`useState`, `useEffect`, `useContext`) | Simple local state handling — **no Redux/Zustand needed** for this project’s scope |
-| **Webcam & Gesture** | (🔜 Placeholder) | Will integrate later using TensorFlow.js / MediaPipe for gesture recognition |
+| **Webcam & Gesture** | @mediapipe/tasks-vision + Browser Webcam API | Detects hand gestures for profile photo capture (user permission required, privacy-friendly) |
 | **Testing** | [Playwright](https://playwright.dev/) | For end-to-end testing of core user flows (job creation, form validation, submission) |
 | **Deployment** | [Vercel](https://vercel.com/) | For hosting and CI/CD integration with Next.js |
 
