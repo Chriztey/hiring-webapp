@@ -247,6 +247,45 @@ Notes:
 - formFields defines each job’s application form fields and their states (mandatory, optional, or off).
 - The Admin panel dynamically reads this configuration to render form fields for applicants.
 
+---
+## Hand Gesture Photo Booth
+
+A real-time photo booth application that lets you take pictures using a 3-step hand gesture sequence (Pose 1 ➡️ Pose 2 ➡️ Pose 3), powered by Next.js and MediaPipe.
+
+### How It Works
+
+This app uses your webcam to watch for a specific sequence of hand gestures to trigger a photo countdown.
+
+*   Enable Webcam: Grant browser permission to access your camera.
+*   Pose 1 (Index Finger): Show your index finger to start the sequence.
+*   Pose 2 (Peace Sign): Show two fingers.
+*   Pose 3 (Three Fingers): Show three fingers.
+*   Countdown: Once Pose 3 is held, a "3... 2... 1..." countdown begins.
+*   Smile! A photo is captured and saved to your browser's local storage. You can then download it or take another.
+
+The app uses a 3-second throttle on gesture detection, meaning you have 9 seconds (3 detection cycles) to move between poses before the sequence times out and resets.
+
+### Tech Stack & Key Features
+
+*   Framework: Next.js (React)
+*   Gesture Recognition: MediaPipe HandLandmarker
+*   Styling: CSS Modules
+*   Data Flow: A real-time, client-side ETL (Extract, Transform, Load) pipeline:
+    *   Extract: requestAnimationFrame captures the live video stream.
+    *   Transform: MediaPipe converts video frames into 3D hand landmarks. This data is throttled to a 3-second interval and checked by a state machine for the 1-2-3 gesture pattern.
+    *   Load: The final "product" (a photo) is triggered by the gesture and loaded into localStorage and Supabase.
+
+### About the Hand Gesture Model
+
+This project uses Google's MediaPipe HandLandmarker model for real-time hand tracking.
+
+*   Pros: It's fast, free, and runs entirely on your device (in the browser), so no server is needed and no private user data is sent.
+*   Fun Fact: The model doesn't just find the hand; it provides 21 3D keypoints, allowing it to understand the precise pose of each finger joint.
+
+  <p align="center">
+  <img src="./public/mediapipe_dataflow.png" alt="Gesture Demo"  />
+</p>
+
 
 ## 🧱 Future Improvements
 🧑‍💼 Applicant Dashboard
